@@ -261,5 +261,4 @@ body:not(.is-booting) .ticker { animation: fade-in .5s .35s ease-out both; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-  .boot { display: none; }
 }

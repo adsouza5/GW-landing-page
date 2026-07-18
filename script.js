@@ -14,9 +14,7 @@ function reveal() {
   wipeOut();
 }
 
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-if (reducedMotion || sessionStorage.getItem('gw-intro-seen')) {
+if (sessionStorage.getItem('gw-intro-seen')) {
   boot?.remove();
   document.body.classList.remove('is-booting');
 } else {
