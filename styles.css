@@ -176,33 +176,44 @@ h1 span:last-child { color: transparent; -webkit-text-stroke: clamp(1px, .1vw, 2
 .ticker div { display: flex; align-items: center; gap: 44px; min-width: max-content; animation: ticker 19s linear infinite; }
 .ticker i { color: var(--red); font-style: normal; }
 
+/* ── Boot / intro overlay ── */
 .boot {
   position: fixed;
   inset: 0;
   z-index: 100;
   overflow: hidden;
-  display: grid;
-  place-items: center;
-  color: var(--ink);
-  background: var(--paper);
-  transition: visibility 0s 3.15s;
-  animation: boot-out .8s 2.35s cubic-bezier(.77,0,.18,1) forwards;
+  background: #000;
 }
-.boot__logo-wrap { position: relative; width: min(29vw, 290px); aspect-ratio: .85; }
-.boot__logo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.boot__logo--red, .boot__logo--cyan { opacity: 0; }
-.boot__logo--red { filter: invert(17%) sepia(96%) saturate(4254%) hue-rotate(352deg) brightness(94%); animation: split-red .52s 1.25s steps(2) both; }
-.boot__logo--cyan { filter: invert(78%) sepia(55%) saturate(392%) hue-rotate(129deg); animation: split-cyan .52s 1.25s steps(2) both; }
-.boot__logo--base { animation: logo-glitch .52s 1.25s steps(2) both; }
-.boot__telemetry { position: absolute; left: 32px; text-transform: uppercase; font: 500 9px/1 "IBM Plex Mono", monospace; letter-spacing: .13em; }
-.boot__telemetry--top { top: 28px; }
-.boot__telemetry--bottom { bottom: 28px; }
-.boot__skip { position: absolute; top: 24px; right: 28px; z-index: 5; border: 0; border-bottom: 1px solid; padding: 4px 0; background: transparent; text-transform: uppercase; font: 500 9px/1 "IBM Plex Mono", monospace; letter-spacing: .1em; cursor: pointer; }
-.boot__scan { position: absolute; left: 0; right: 0; top: 0; height: 2px; opacity: 0; background: var(--red); box-shadow: 0 0 25px var(--red); animation: scan .55s 1.55s ease-in both; }
-.boot__tear { position: absolute; left: 0; width: 100%; opacity: 0; background: url("assets/gw-editorial-hero.png") center/cover; }
-.boot__tear--one { top: 25%; height: 12%; animation: tear-one .62s 1.62s steps(2) both; }
-.boot__tear--two { top: 67%; height: 7%; animation: tear-two .48s 1.75s steps(2) both; }
 
+.boot__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.boot__skip {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  z-index: 5;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.45);
+  padding: 4px 0;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  font: 500 9px/1 "IBM Plex Mono", monospace;
+  letter-spacing: .1em;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+}
+.boot__skip:hover { color: #fff; border-color: rgba(255,255,255,0.9); }
+
+.boot--out { animation: boot-out .6s cubic-bezier(.77,0,.18,1) forwards; }
+
+/* ── Hero reveal (fires after boot removed) ── */
 body.is-booting .nav,
 body.is-booting .hero__content,
 body.is-booting .drop-index,
@@ -216,12 +227,6 @@ body:not(.is-booting) .ticker { animation: fade-in .5s .35s ease-out both; }
 
 @keyframes grain { 0%{translate:0 0} 25%{translate:2% -1%} 50%{translate:-1% 2%} 75%{translate:1% 1%} 100%{translate:-2% -1%} }
 @keyframes ticker { to { transform: translateX(-50%); } }
-@keyframes split-red { 0%,100%{opacity:0;translate:0} 18%{opacity:.9;translate:-18px 0} 45%{opacity:.8;translate:11px -3px} 70%{opacity:.9;translate:-6px 2px} }
-@keyframes split-cyan { 0%,100%{opacity:0;translate:0} 20%{opacity:.55;translate:16px 0} 42%{opacity:.6;translate:-10px 3px} 68%{opacity:.5;translate:6px -2px} }
-@keyframes logo-glitch { 0%,100%{clip-path:inset(0)} 18%{clip-path:polygon(0 0,100% 0,100% 23%,0 29%,0 58%,100% 52%,100% 100%,0 100%);translate:12px 0} 45%{clip-path:polygon(0 0,100% 0,100% 55%,0 49%,0 77%,100% 72%,100% 100%,0 100%);translate:-15px 0} 72%{translate:5px 0} }
-@keyframes scan { 0%{opacity:0;top:0} 18%{opacity:1} 100%{opacity:0;top:100%} }
-@keyframes tear-one { 0%{opacity:0;transform:translateX(-4%)} 25%,50%{opacity:1;transform:translateX(3%)} 75%{opacity:.75;transform:translateX(-1%)} 100%{opacity:0;transform:translateX(0)} }
-@keyframes tear-two { 0%{opacity:0;transform:translateX(6%)} 35%,65%{opacity:1;transform:translateX(-3%)} 100%{opacity:0;transform:translateX(0)} }
 @keyframes boot-out { 0%{clip-path:inset(0);visibility:visible} 48%{clip-path:inset(47% 0 47% 0)} 55%{clip-path:inset(48.5% 0 48.5% 0);background:#d62020} 100%{clip-path:inset(50% 0 50% 0);visibility:hidden} }
 @keyframes reveal-down { from{opacity:0;translate:0 -20px} to{opacity:1;translate:0 0} }
 @keyframes reveal-content { from{opacity:0;transform:translateY(-36%);filter:blur(5px)} to{opacity:1;transform:translateY(-42%);filter:blur(0)} }
@@ -248,8 +253,6 @@ body:not(.is-booting) .ticker { animation: fade-in .5s .35s ease-out both; }
   .hero__meta { left: 20px; right: 20px; bottom: 48px; }
   .hero__meta span:nth-child(2), .hero__meta span:nth-child(3) { display: none; }
   .ticker { height: 34px; }
-  .boot__logo-wrap { width: 48vw; }
-  .boot__telemetry { left: 18px; }
   .boot__skip { right: 18px; }
   body:not(.is-booting) .hero__content { animation-name: reveal-mobile; }
 }
@@ -260,4 +263,3 @@ body:not(.is-booting) .ticker { animation: fade-in .5s .35s ease-out both; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .boot { display: none; }
 }
-

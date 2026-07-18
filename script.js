@@ -1,25 +1,39 @@
-const boot = document.querySelector('.boot');
-const skip = document.querySelector('.boot__skip');
+const boot  = document.querySelector('.boot');
+const video = document.querySelector('.boot__video');
+const skip  = document.querySelector('.boot__skip');
 const sound = document.querySelector('.sound');
+
+function wipeOut() {
+  if (!boot) return;
+  boot.classList.add('boot--out');
+  setTimeout(() => boot.remove(), 620);
+}
 
 function reveal() {
   document.body.classList.remove('is-booting');
-  boot?.setAttribute('aria-hidden', 'true');
+  wipeOut();
 }
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 if (reducedMotion || sessionStorage.getItem('gw-intro-seen')) {
   boot?.remove();
-  reveal();
+  document.body.classList.remove('is-booting');
 } else {
-  window.setTimeout(() => {
+  sessionStorage.setItem('gw-intro-seen', '1');
+
+  if (video) {
+    video.addEventListener('ended', reveal);
+    video.addEventListener('error', reveal);
+    const p = video.play();
+    if (p !== undefined) p.catch(reveal); // autoplay blocked → skip to hero
+  } else {
     reveal();
-    sessionStorage.setItem('gw-intro-seen', '1');
-  }, 2450);
+  }
 }
 
 skip?.addEventListener('click', () => {
-  boot.remove();
+  if (video) video.pause();
   reveal();
 });
 
