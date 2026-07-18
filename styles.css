@@ -259,8 +259,13 @@ body.modal-open { overflow: hidden; }
 .access-card__meta { min-height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; border-top: 1px solid rgba(11,11,11,.3); text-transform: uppercase; font: 500 8px/1 "IBM Plex Mono", monospace; letter-spacing: .08em; }
 
 @keyframes access-backdrop { from{opacity:0} to{opacity:1} }
+@keyframes access-backdrop-out { from{opacity:1} to{opacity:0} }
 @keyframes access-card-in { 0%{opacity:0;transform:translateY(34px) scale(.985);clip-path:inset(0 0 100% 0)} 28%{opacity:1} 100%{opacity:1;transform:none;clip-path:inset(0)} }
+@keyframes access-card-out { 0%{opacity:1;transform:none;clip-path:inset(0)} 65%{opacity:0} 100%{opacity:0;transform:translateY(34px) scale(.985);clip-path:inset(0 0 100% 0)} }
 @keyframes status-pulse { 50%{opacity:.25} }
+
+.access-modal.is-closing .access-modal__backdrop { animation: access-backdrop-out .38s ease forwards; }
+.access-modal.is-closing .access-card { animation: access-card-out .38s cubic-bezier(.77,0,.18,1) forwards; }
 
 /* ── Boot / intro overlay — video sequence ── */
 .boot {

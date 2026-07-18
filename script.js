@@ -88,9 +88,13 @@ function openModal() {
 }
 
 function closeModal() {
-  modal.hidden = true;
-  document.body.classList.remove('modal-open');
-  lastFocus?.focus();
+  modal.classList.add('is-closing');
+  setTimeout(() => {
+    modal.hidden = true;
+    modal.classList.remove('is-closing');
+    document.body.classList.remove('modal-open');
+    lastFocus?.focus();
+  }, 380);
 }
 
 function validate() {
