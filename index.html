@@ -8,16 +8,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="stylesheet" href="styles.css?v=22" />
 </head>
 <body class="is-booting">
   <div class="boot" aria-hidden="true">
-    <video class="boot__video"
-      src="assets/gw-glitch-transition.mp4"
-      autoplay muted playsinline
-      preload="auto"
-      aria-hidden="true"
-    ></video>
+    <video class="boot__video" src="assets/gw-glitch-transition-clean-hero-4s.mp4" autoplay muted playsinline preload="auto"></video>
     <button class="boot__skip" type="button">Skip intro</button>
   </div>
 
@@ -31,13 +29,10 @@
         <img src="assets/gw-mark.png" alt="GW" />
       </a>
       <nav class="nav__links" aria-label="Primary navigation">
-        <a href="#drop">Drop 001</a>
         <a href="#lookbook">Lookbook</a>
-        <a href="#about">Manifesto</a>
       </nav>
       <div class="nav__actions">
-        <button class="sound" type="button" aria-label="Toggle interface sound" aria-pressed="false"><span></span> Sound</button>
-        <a href="#cart">Bag <sup>0</sup></a>
+        <!-- <a href="#cart">Bag <sup>0</sup></a> -->
         <button class="menu" type="button" aria-label="Open menu"><i></i><i></i></button>
       </div>
     </header>
@@ -47,7 +42,7 @@
       <h1><span>No signal.</span><span>New form.</span></h1>
       <p>Limited-run garments for people who refuse the default setting.</p>
       <div class="hero__ctas">
-        <a class="cta cta--solid" href="#shop"><span>Enter the drop</span><b>↗</b></a>
+        <button class="cta cta--solid" id="enter-drop" type="button"><span>Enter the drop</span><b>↗</b></button>
         <a class="cta cta--text" href="#lookbook">View editorial <span>→</span></a>
       </div>
     </section>
@@ -62,15 +57,62 @@
       <span>Edition 001 / 120 units</span>
     </div>
 
-    <div class="ticker" aria-hidden="true">
-      <div>
-        <span>GW / OUTSIDE THE PATTERN</span><i>✳</i><span>DROP 001 / NOW TRANSMITTING</span><i>✳</i>
-        <span>GW / OUTSIDE THE PATTERN</span><i>✳</i><span>DROP 001 / NOW TRANSMITTING</span><i>✳</i>
-      </div>
-    </div>
+
   </main>
 
-  <script src="script.js"></script>
+  <div class="access-modal" id="access-modal" hidden>
+    <button class="access-modal__backdrop" type="button" data-close-modal aria-label="Close access form"></button>
+
+    <section class="access-card" role="dialog" aria-modal="true" aria-labelledby="access-title" aria-describedby="access-description">
+      <div class="access-card__rail" aria-hidden="true"></div>
+      <header class="access-card__header">
+        <span><i></i> Private access // Drop 001</span>
+        <span>GW.OS / 002</span>
+        <button class="access-card__close" type="button" data-close-modal aria-label="Close dialog"><i></i><i></i></button>
+      </header>
+
+      <div class="access-card__body" id="access-form-view">
+        <p class="access-card__index">ACCESS REQUEST / 01</p>
+        <h2 id="access-title"><span>Get the signal.</span><span>Enter first.</span></h2>
+        <p class="access-card__copy" id="access-description">Choose where you want the transmission. We'll only contact you for early access, limited releases, and private drops.</p>
+
+        <form class="access-form" id="access-form" novalidate>
+          <div class="channel-switch" role="tablist" aria-label="Contact method">
+            <button type="button" role="tab" aria-selected="true" data-channel="email">Email</button>
+            <button type="button" role="tab" aria-selected="false" data-channel="phone">SMS</button>
+          </div>
+
+          <label class="sr-only" id="contact-label" for="contact-input">Email address</label>
+          <div class="access-input">
+            <span id="contact-prefix">EMAIL://</span>
+            <input id="contact-input" name="contact" type="email" inputmode="email" autocomplete="email" placeholder="YOU@DOMAIN.COM" aria-describedby="form-error consent-note" required />
+            <span class="access-input__status" aria-hidden="true">●</span>
+          </div>
+          <p class="access-form__error" id="form-error" role="alert"></p>
+
+          <div class="access-form__footer">
+            <p id="consent-note">By continuing, you agree to receive launch updates. Unsubscribe anytime. Message and data rates may apply for SMS.</p>
+            <button class="access-form__submit" type="submit"><span>Request access</span><b>↗</b></button>
+          </div>
+        </form>
+      </div>
+
+      <div class="access-success" id="access-success" hidden tabindex="-1">
+        <p class="access-card__index">TRANSMISSION / CONFIRMED</p>
+        <div class="access-success__mark"><span>✓</span></div>
+        <h2>Signal received.</h2>
+        <p>You're on the private-access list. Watch your signal for Drop 001.</p>
+        <button type="button" data-close-modal>Return to transmission <span>→</span></button>
+      </div>
+
+      <footer class="access-card__meta">
+        <span>SECURE CHANNEL</span>
+        <span>40.7128° N / 74.0060° W</span>
+        <span>NO SPAM / NO NOISE</span>
+      </footer>
+    </section>
+  </div>
+
+  <script src="script.js?v=22"></script>
 </body>
 </html>
-
