@@ -25,13 +25,19 @@ function endBoot() {
   setTimeout(() => boot?.remove(), 950);
 }
 
-if (video) {
-  const fallback = setTimeout(endBoot, 12000);
-  video.addEventListener('ended', () => { clearTimeout(fallback); endBoot(); });
-  video.addEventListener('error', () => { clearTimeout(fallback); endBoot(); });
-  video.play().catch(endBoot);
+if (sessionStorage.getItem('gw-intro-seen')) {
+  boot?.remove();
+  revealHero();
 } else {
-  endBoot();
+  sessionStorage.setItem('gw-intro-seen', '1');
+  if (video) {
+    const fallback = setTimeout(endBoot, 12000);
+    video.addEventListener('ended', () => { clearTimeout(fallback); endBoot(); });
+    video.addEventListener('error', () => { clearTimeout(fallback); endBoot(); });
+    video.play().catch(endBoot);
+  } else {
+    endBoot();
+  }
 }
 
 skip?.addEventListener('click', () => { if (boot) endBoot(); });
