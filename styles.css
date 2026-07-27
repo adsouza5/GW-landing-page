@@ -149,7 +149,7 @@ h1 span:last-child { color: transparent; -webkit-text-stroke: clamp(1px, .1vw, 2
   bottom: 57px;
   z-index: 3;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   text-transform: uppercase;
   font: 500 9px/1 "IBM Plex Mono", monospace;
   letter-spacing: .08em;
