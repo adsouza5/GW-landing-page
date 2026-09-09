@@ -11,7 +11,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <link rel="stylesheet" href="styles.css?v=29" />
+  <link rel="stylesheet" href="styles.css?v=30" />
 </head>
 <body class="is-booting">
   <div class="boot" aria-hidden="true">
@@ -32,6 +32,7 @@
         <a href="#lookbook">Lookbook</a>
       </nav>
       <div class="nav__actions">
+        <button class="nav__bag-btn" id="bag-open" type="button" aria-label="Open bag" aria-expanded="false" aria-controls="bag-panel">Bag <sup id="bag-count">0</sup></button>
         <button class="menu" type="button" aria-label="Open menu"><i></i><i></i></button>
       </div>
     </header>
@@ -56,6 +57,33 @@
 
 
   </main>
+
+  <!-- Bag panel -->
+  <div class="bag-panel" id="bag-panel" aria-hidden="true">
+    <button class="bag-panel__backdrop" type="button" aria-label="Close bag"></button>
+    <aside class="bag-panel__drawer" role="dialog" aria-modal="true" aria-label="Your bag">
+      <div class="bag-panel__rail"></div>
+      <header class="bag-panel__header">
+        <span>BAG / <span id="bag-header-count">0</span> ITEM<span id="bag-header-plural"></span></span>
+        <button class="bag-panel__close" type="button" aria-label="Close bag"><i></i><i></i></button>
+      </header>
+      <div class="bag-panel__body" id="bag-body">
+        <div class="bag-empty" id="bag-empty">
+          <p class="bag-empty__label">GW.OS // BAG EMPTY</p>
+          <p class="bag-empty__hint">Drop 001 launches soon.<br>Enter the drop to get early access.</p>
+          <button class="bag-empty__cta" type="button" id="bag-enter-drop">Enter the drop <span>↗</span></button>
+        </div>
+        <ul class="bag-items" id="bag-items" hidden></ul>
+      </div>
+      <footer class="bag-panel__footer" id="bag-footer" hidden>
+        <div class="bag-panel__subtotal">
+          <span>Subtotal</span><span id="bag-subtotal">$0 USD</span>
+        </div>
+        <button class="bag-panel__checkout" type="button">Proceed to checkout <b>↗</b></button>
+        <p class="bag-panel__note">Shipping and taxes calculated at checkout</p>
+      </footer>
+    </aside>
+  </div>
 
   <div class="access-modal" id="access-modal" hidden>
     <button class="access-modal__backdrop" type="button" data-close-modal aria-label="Close access form"></button>
@@ -110,6 +138,6 @@
     </section>
   </div>
 
-  <script src="script.js?v=29"></script>
+  <script src="script.js?v=30"></script>
 </body>
 </html>

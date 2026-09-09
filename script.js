@@ -48,6 +48,85 @@ sound?.addEventListener('click', () => {
   sound.lastChild.textContent = active ? ' Sound' : ' Sound on';
 });
 
+// ── Bag panel ──────────────────────────────────────────────────
+const bagPanel       = document.getElementById('bag-panel');
+const bagOpenBtn     = document.getElementById('bag-open');
+const bagClose       = bagPanel && bagPanel.querySelector('.bag-panel__close');
+const bagBackdrop    = bagPanel && bagPanel.querySelector('.bag-panel__backdrop');
+const bagCountEl     = document.getElementById('bag-count');
+const bagHeaderCount = document.getElementById('bag-header-count');
+const bagHeaderPlur  = document.getElementById('bag-header-plural');
+const bagEmptyEl     = document.getElementById('bag-empty');
+const bagItemsEl     = document.getElementById('bag-items');
+const bagFooterEl    = document.getElementById('bag-footer');
+const bagSubtotalEl  = document.getElementById('bag-subtotal');
+const bagEnterDrop   = document.getElementById('bag-enter-drop');
+
+let bagItems = [];
+let bagLastFocus = null;
+
+function bagTotal() { return bagItems.reduce((s, i) => s + i.price * i.qty, 0); }
+
+function renderBag() {
+  const qty = bagItems.reduce((s, i) => s + i.qty, 0);
+  if (bagCountEl)     bagCountEl.textContent     = qty;
+  if (bagHeaderCount) bagHeaderCount.textContent = qty;
+  if (bagHeaderPlur)  bagHeaderPlur.textContent  = qty === 1 ? '' : 'S';
+  const empty = qty === 0;
+  if (bagEmptyEl)  bagEmptyEl.hidden  = !empty;
+  if (bagItemsEl)  bagItemsEl.hidden  = empty;
+  if (bagFooterEl) bagFooterEl.hidden = empty;
+  if (bagSubtotalEl) bagSubtotalEl.textContent = '$' + bagTotal() + ' USD';
+  if (!bagItemsEl) return;
+  bagItemsEl.innerHTML = bagItems.map((item, idx) => `
+    <li class="bag-item">
+      <img class="bag-item__img" src="assets/gw-editorial-hero.png" alt="${item.name}" />
+      <div class="bag-item__info">
+        <p class="bag-item__name">${item.name}</p>
+        <p class="bag-item__meta">Size: ${item.size} &nbsp;/ Qty: ${item.qty}</p>
+        <p class="bag-item__price">$${item.price} USD</p>
+      </div>
+      <button class="bag-item__remove" data-idx="${idx}" aria-label="Remove ${item.name}">✕</button>
+    </li>`).join('');
+  bagItemsEl.querySelectorAll('.bag-item__remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      bagItems.splice(Number(btn.dataset.idx), 1);
+      renderBag();
+    });
+  });
+}
+
+function openBag() {
+  if (!bagPanel) return;
+  bagLastFocus = document.activeElement;
+  bagPanel.classList.add('is-open');
+  bagPanel.setAttribute('aria-hidden', 'false');
+  if (bagOpenBtn) bagOpenBtn.setAttribute('aria-expanded', 'true');
+  if (bagClose) bagClose.focus();
+}
+
+function closeBag() {
+  if (!bagPanel) return;
+  bagPanel.classList.remove('is-open');
+  bagPanel.setAttribute('aria-hidden', 'true');
+  if (bagOpenBtn) bagOpenBtn.setAttribute('aria-expanded', 'false');
+  if (bagLastFocus) bagLastFocus.focus();
+}
+
+function addToBag(name, size, price) {
+  const existing = bagItems.find(i => i.name === name && i.size === size);
+  if (existing) { existing.qty++; } else { bagItems.push({ name, size, price, qty: 1 }); }
+  renderBag();
+  openBag();
+}
+
+if (bagOpenBtn)  bagOpenBtn.addEventListener('click', openBag);
+if (bagClose)    bagClose.addEventListener('click', closeBag);
+if (bagBackdrop) bagBackdrop.addEventListener('click', closeBag);
+if (bagEnterDrop) bagEnterDrop.addEventListener('click', () => { closeBag(); openModal(); });
+
+renderBag();
+
 // ── Access modal ───────────────────────────────────────────────
 let channel = 'email';
 let lastFocus = null;
@@ -136,8 +215,12 @@ accessForm?.addEventListener('submit', e => {
 });
 
 document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (bagPanel && bagPanel.classList.contains('is-open')) { closeBag(); return; }
+    if (!modal?.hidden) { closeModal(); return; }
+    return;
+  }
   if (modal?.hidden) return;
-  if (e.key === 'Escape') { closeModal(); return; }
   if (e.key !== 'Tab') return;
   const focusable = [...accessCard.querySelectorAll('button:not([disabled]),input:not([disabled]),a[href]')]
     .filter(el => !el.closest('[hidden]'));
